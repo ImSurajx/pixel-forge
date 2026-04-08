@@ -21,7 +21,7 @@
   --opacity-muted: 0.7;
   --opacity-overlay: 0.8;
   /* ================= TYPOGRAPHY ================= */
-  --font-family: 'Inter', sans-serif;
+  --font-family: 'Poppins', 'Inter', sans-serif;
   --font-size-xxs: 10px;
   --font-size-xs: 12px;
   --font-size-sm: 14px;
@@ -117,11 +117,43 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  font-family: var(--font-family);
+  color: var(--color-text-primary);
 }
 
 html,
 body {
   height: 100%;
   width: 100%;
+}
+
+main {
+  height: 100%;
+  width: 100%;
   background: var(--color-bg);
+}
+main nav {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  padding: var(--space-4);
+}
+main nav .logo {
+  font-size: var(--font-size-2xl);
+  color: var(--color-primary);
+}
+main nav .nav-btns {
+  display: flex;
+  font-size: var(--font-size-sm);
+  width: 30%;
+  gap: var(--space-10);
+  justify-content: right;
+  align-items: center;
+}
+main nav .nav-btns .download-btn {
+  padding: var(--space-3) var(--space-6);
+  border-radius: var(--radius-sm);
+  background: var(--color-primary);
+  color: var(--color-bg);
+  font-weight: var(--font-weight-medium);
 }/*# sourceMappingURL=style.css.map */
