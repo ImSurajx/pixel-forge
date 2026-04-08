@@ -152,6 +152,12 @@ main nav .nav-btns {
   justify-content: right;
   align-items: center;
 }
+main nav .nav-btns .reset-btn {
+  border: 1.5px solid var(--color-border);
+  padding: var(--space-3) var(--space-6);
+  border-radius: var(--radius-sm);
+  white-space: nowrap;
+}
 main nav .nav-btns .download-btn {
   padding: var(--space-3) var(--space-6);
   border-radius: var(--radius-sm);
