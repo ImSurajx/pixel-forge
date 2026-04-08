@@ -142,13 +142,14 @@ main nav {
 }
 main nav .logo {
   font-size: var(--font-size-2xl);
+  font-weight: var(--font-weight-semibold);
   color: var(--color-primary);
 }
 main nav .nav-btns {
   display: flex;
   font-size: var(--font-size-sm);
   width: 30%;
-  gap: var(--space-10);
+  gap: var(--space-8);
   justify-content: right;
   align-items: center;
 }
@@ -173,7 +174,48 @@ main .container {
   flex: 1;
 }
 main .container .presets {
+  padding: var(--space-3);
+  background: var(--color-divider);
   border: 0.5px solid var(--color-border);
+  display: flex;
+  flex-direction: column;
+}
+main .container .presets .details {
+  margin-bottom: var(--space-5);
+}
+main .container .presets .details .title {
+  font-size: var(--font-size-md);
+  font-weight: var(--font-weight-semibold);
+}
+main .container .presets .details .desc {
+  font-size: var(--font-size-xxs);
+  color: var(--color-text-muted);
+  font-weight: var(--font-weight-semibold);
+}
+main .container .presets .filter-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  cursor: pointer;
+}
+main .container .presets .filter-container .outer {
+  border: 1px solid #fff;
+  padding: 0.3rem;
+  aspect-ratio: 4/3;
+  border-radius: var(--radius-sm);
+  display: flex;
+  flex-direction: column;
+}
+main .container .presets .filter-container .outer .img-preview {
+  border: 1px solid #fff;
+  flex: 1;
+  margin-bottom: var(--space-1);
+  border-radius: var(--radius-xs);
+}
+main .container .presets .filter-container .outer .filter-type {
+  font-size: var(--font-size-xxs);
+  color: var(--color-text-secondary);
+  text-align: center;
 }
 main .container .img-container {
   border: 0.5px solid var(--color-border);
