@@ -226,9 +226,6 @@ main .container .presets .filter-container .outer .filter-type {
 main .container .presets .filter-container::-webkit-scrollbar {
   display: none;
 }
-main .container .img-container {
-  border: 0.5px solid var(--color-border);
-}
 main .container .adjustments {
   border: 0.5px solid var(--color-border);
 }/*# sourceMappingURL=style.css.map */
