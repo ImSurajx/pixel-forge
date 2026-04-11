@@ -155,6 +155,7 @@
     box-sizing: border-box;
     font-family: var(--font-family);
     color: var(--color-text-primary);
+    cursor: pointer;
 }
 
 html,
@@ -355,11 +356,25 @@ main {
                 display: flex;
                 flex-direction: column;
                 width: 100%;
-
-                label {
-                    font-size: small;
+                
+                .labels {
+                    display: flex;
+                    justify-content: space-between;
+                    label {
+                        font-size: var(--font-size-sm);
+                    }
                 }
+
+                input {
+                    accent-color: var(--color-primary);
+                    background: #111827;
+                    border: none;
+                    outline: none;
+                    cursor: pointer;
+                }
+
             }
         }
     }
+    
 }

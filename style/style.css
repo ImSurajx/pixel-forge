@@ -119,6 +119,7 @@
   box-sizing: border-box;
   font-family: var(--font-family);
   color: var(--color-text-primary);
+  cursor: pointer;
 }
 
 html,
@@ -295,10 +296,29 @@ main .container .adjustments .exposure-img {
   flex-direction: column;
   width: 100%;
 }
-main .container .adjustments .brightness-img label,
-main .container .adjustments .contrast-img label,
-main .container .adjustments .saturation-img label,
-main .container .adjustments .hue-img label,
-main .container .adjustments .exposure-img label {
-  font-size: small;
+main .container .adjustments .brightness-img .labels,
+main .container .adjustments .contrast-img .labels,
+main .container .adjustments .saturation-img .labels,
+main .container .adjustments .hue-img .labels,
+main .container .adjustments .exposure-img .labels {
+  display: flex;
+  justify-content: space-between;
+}
+main .container .adjustments .brightness-img .labels label,
+main .container .adjustments .contrast-img .labels label,
+main .container .adjustments .saturation-img .labels label,
+main .container .adjustments .hue-img .labels label,
+main .container .adjustments .exposure-img .labels label {
+  font-size: var(--font-size-sm);
+}
+main .container .adjustments .brightness-img input,
+main .container .adjustments .contrast-img input,
+main .container .adjustments .saturation-img input,
+main .container .adjustments .hue-img input,
+main .container .adjustments .exposure-img input {
+  accent-color: var(--color-primary);
+  background: #111827;
+  border: none;
+  outline: none;
+  cursor: pointer;
 }/*# sourceMappingURL=style.css.map */
