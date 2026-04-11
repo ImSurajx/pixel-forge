@@ -266,4 +266,39 @@ main .container .imgxtool-container .tools .crop i,
 main .container .imgxtool-container .tools .rotate i,
 main .container .imgxtool-container .tools .mirror i {
   font-size: var(--font-size-xl);
+}
+main .container .adjustments {
+  padding: var(--space-3);
+  background: var(--color-divider);
+  border: 0.5px solid var(--color-border);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  margin-bottom: var(--space-5);
+}
+main .container .adjustments .title {
+  font-size: var(--font-size-md);
+  font-weight: var(--font-weight-semibold);
+}
+main .container .adjustments .desc {
+  font-size: var(--font-size-xxs);
+  color: var(--color-text-muted);
+  font-weight: var(--font-weight-semibold);
+  margin-bottom: var(--space-3);
+}
+main .container .adjustments .brightness-img,
+main .container .adjustments .contrast-img,
+main .container .adjustments .saturation-img,
+main .container .adjustments .hue-img,
+main .container .adjustments .exposure-img {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+main .container .adjustments .brightness-img label,
+main .container .adjustments .contrast-img label,
+main .container .adjustments .saturation-img label,
+main .container .adjustments .hue-img label,
+main .container .adjustments .exposure-img label {
+  font-size: small;
 }/*# sourceMappingURL=style.css.map */

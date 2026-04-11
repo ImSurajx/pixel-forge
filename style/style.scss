@@ -327,7 +327,39 @@ main {
         }
 
         .adjustments {
-            
+            padding: var(--space-3);
+            background: var(--color-divider);
+            border: 0.5px solid var(--color-border);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            margin-bottom: var(--space-5);
+
+            .title {
+                font-size: var(--font-size-md);
+                font-weight: var(--font-weight-semibold);
+            }
+
+            .desc {
+                font-size: var(--font-size-xxs);
+                color: var(--color-text-muted);
+                font-weight: var(--font-weight-semibold);
+                margin-bottom: var(--space-3);
+            }
+
+            .brightness-img,
+            .contrast-img,
+            .saturation-img,
+            .hue-img,
+            .exposure-img {
+                display: flex;
+                flex-direction: column;
+                width: 100%;
+
+                label {
+                    font-size: small;
+                }
+            }
         }
     }
 }
