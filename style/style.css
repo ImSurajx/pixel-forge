@@ -228,4 +228,45 @@ main .container .presets .filter-container::-webkit-scrollbar {
 }
 main .container .adjustments {
   border: 0.5px solid var(--color-border);
+}
+main .container .imgxtool-container {
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 1rem;
+}
+main .container .imgxtool-container .img-container {
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--color-border);
+  width: 100%;
+  height: 60%;
+  position: relative;
+}
+main .container .imgxtool-container .tools {
+  display: flex;
+  position: absolute;
+  gap: var(--space-8);
+  font-size: var(--font-size-lg);
+  bottom: 15%;
+  left: 50%;
+  transform: translate(-50%, 50%);
+  border: 1px solid var(--color-border);
+  padding: 1rem;
+  border-radius: var(--radius-xl);
+}
+main .container .imgxtool-container .tools .magni-tool {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5rem;
+}
+main .container .imgxtool-container .tools .magni-tool i {
+  font-size: var(--font-size-xl);
+}
+main .container .imgxtool-container .tools .crop i,
+main .container .imgxtool-container .tools .rotate i,
+main .container .imgxtool-container .tools .mirror i {
+  font-size: var(--font-size-xl);
 }/*# sourceMappingURL=style.css.map */
