@@ -295,6 +295,7 @@ main .container .adjustments .exposure-img {
   display: flex;
   flex-direction: column;
   width: 100%;
+  margin-bottom: var(--space-6);
 }
 main .container .adjustments .brightness-img .labels,
 main .container .adjustments .contrast-img .labels,
@@ -321,4 +322,5 @@ main .container .adjustments .exposure-img input {
   border: none;
   outline: none;
   cursor: pointer;
+  margin-top: var(--space-4);
 }/*# sourceMappingURL=style.css.map */

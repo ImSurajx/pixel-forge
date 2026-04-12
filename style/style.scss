@@ -356,10 +356,12 @@ main {
                 display: flex;
                 flex-direction: column;
                 width: 100%;
-                
+                margin-bottom: var(--space-6);
+
                 .labels {
                     display: flex;
                     justify-content: space-between;
+
                     label {
                         font-size: var(--font-size-sm);
                     }
@@ -371,10 +373,12 @@ main {
                     border: none;
                     outline: none;
                     cursor: pointer;
+                    margin-top: var(--space-4);
                 }
 
             }
+
         }
     }
-    
+
 }
