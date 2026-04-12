@@ -378,6 +378,51 @@ main {
 
             }
 
+            .para-btns {
+                display: flex;
+                flex-direction: column;
+                gap: 1rem;
+
+                .auto {
+                    font-size: var(--font-size-xxs);
+                    color: var(--color-text-muted);
+                    font-weight: var(--font-weight-semibold);
+                    margin-bottom: var(--space-3);
+                }
+
+                .btn {
+                    width: 100%;
+                    border: 1px solid var(--color-border);
+                    background: var(--color-bg);
+                    white-space: nowrap;
+                    padding: var(--space-4) var(--space-1);
+                    display: flex;
+                    justify-content: space-between;
+                    border-radius: var(--radius-md);
+
+                    .text {
+                        margin-left: var(--space-2);
+                        width: fit-content;
+                        font-size: var(--font-size-md);
+                    }
+
+                    .toggle {
+                        border: 1px solid #fff;
+                        width: 15%;
+                        border-radius: 50px;
+                        margin-right: var(--space-2);
+                        display: flex;
+                        flex-direction: row;
+
+                        .circle {
+                            aspect-ratio: 1/1;
+                            border: 1px solid var(--color-border);
+                            background: #fff;
+                            border-radius: var(--radius-full);
+                        }
+                    }
+                }
+            }
         }
     }
 
