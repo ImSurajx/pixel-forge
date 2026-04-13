@@ -297,7 +297,16 @@ main {
                 justify-content: center;
                 align-items: center;
                 // overflow: hidden;
-
+                #img-label{
+                    color: var(--color-bg);
+                    padding: var(--space-2);
+                    background: var(--color-primary);
+                    border-radius: var(--radius-sm);
+                    i{
+                        color: #0F172A;
+                    }
+                }
+                
                 img {
                     max-width: 100%;
                     max-height: 100%;
@@ -305,6 +314,8 @@ main {
                     transform-origin: center center;
                     transition: 0.3s ease;
                 }
+
+                
             }
 
             .tools {
