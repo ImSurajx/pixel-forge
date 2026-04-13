@@ -29,14 +29,14 @@ selectImg.addEventListener("change", (e) => {
 })
 
 zoomIn.addEventListener("click", (e) => {
-    console.log(e);
-    if (scale =< 2) scale += 0.05;
+    if(!isImage) return;
+    if (scale <= 2) scale += 0.05;
     else scale = 1;
     document.querySelector('#cont-img').style.scale = `${scale}`;
     zoom.textContent = `${Math.floor(scale * 100)}%`;
 })
 zoomOut.addEventListener("click", (e) => {
-    console.log(e);
+    if(!isImage) return;
     if (scale >= 0) scale -= 0.05;
     else scale = 1;
     document.querySelector('#cont-img').style.scale = `${scale}`;
