@@ -237,16 +237,17 @@ main .container .imgxtool-container {
   justify-content: center;
   align-items: center;
   padding: 1rem;
+  position: relative;
 }
 main .container .imgxtool-container .img-container {
   border-radius: var(--radius-sm);
   border: 1px solid var(--color-border);
   width: 100%;
   height: 500px;
-  position: relative;
   display: flex;
   justify-content: center;
   align-items: center;
+  overflow: hidden;
 }
 main .container .imgxtool-container .img-container #img-label {
   color: var(--color-bg);
@@ -270,7 +271,7 @@ main .container .imgxtool-container .tools {
   position: absolute;
   gap: var(--space-8);
   font-size: var(--font-size-lg);
-  bottom: -15%;
+  bottom: 15%;
   left: 50%;
   transform: translate(-50%, 50%);
   border: 1px solid var(--color-border);
