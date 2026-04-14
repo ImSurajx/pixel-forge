@@ -1,3 +1,6 @@
+// genral variables
+let imgElement = null;
+
 // all the requried field to get image into img container
 let selectImg = document.querySelector('#choose-image');
 let imgContainer = document.querySelector('.img-container');
@@ -8,9 +11,8 @@ let scale = 1;
 let zoomIn = document.querySelector('.ri-zoom-in-line');
 let zoomOut = document.querySelector('.ri-zoom-out-line');
 let zoom = document.querySelector('.zoom');
-
-// track image present of not
-let isImage = false;
+let minZoom = 0.1;
+let maxZoom = 2;
 
 // create image & replace it with our container.
 selectImg.addEventListener("change", (e) => {
@@ -25,20 +27,19 @@ selectImg.addEventListener("change", (e) => {
         imageInputLable.hidden = true;
         imgContainer.appendChild(img);
         isImage = true;
+        imgElement = img;
     }
 })
 
 zoomIn.addEventListener("click", (e) => {
-    if(!isImage) return;
-    if (scale <= 2) scale += 0.05;
-    else scale = 1;
-    document.querySelector('#cont-img').style.scale = `${scale}`;
+    if (!imgElement) return;
+    if (scale < 2) scale += 0.05;
+    imgElement.style.transform = `scale(${scale})`;
     zoom.textContent = `${Math.floor(scale * 100)}%`;
 })
 zoomOut.addEventListener("click", (e) => {
-    if(!isImage) return;
-    if (scale >= 0) scale -= 0.05;
-    else scale = 1;
-    document.querySelector('#cont-img').style.scale = `${scale}`;
+    if (!imgElement) return;
+    if (scale > 0.5) scale -= 0.05;
+    imgElement.style.transform = `scale(${scale})`;
     zoom.textContent = `${Math.floor(scale * 100)}%`;
 })
