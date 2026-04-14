@@ -18,9 +18,13 @@ let maxZoom = 2;
 let antiClock = document.querySelector('.ri-anticlockwise-2-line');
 let rotation = 0;
 
+// varible for fliping the image
+let mirror = document.querySelector('.ri-flip-horizontal-line');
+let flipX = 1;
+
 // this function update image according to user tool
 function updateImage() {
-    imgElement.style.transform = `rotate(${rotation}deg) scale(${scale})`;
+    imgElement.style.transform = `rotate(${rotation}deg) scaleX(${scale * flipX}) scaleY(${scale})`;
 }
 
 // create image & replace it with our container.
@@ -32,6 +36,9 @@ selectImg.addEventListener("change", (e) => {
         return
     }
     else {
+        scale = 1;
+        rotation = 0;
+        flipX = 1;
         img.src = URL.createObjectURL(file);
         imageInputLable.hidden = true;
         imgContainer.appendChild(img);
@@ -59,7 +66,14 @@ zoomOut.addEventListener("click", (e) => {
 // when user click rotateIcon this function will run
 antiClock.addEventListener("click", (e) => {
     if (!imgElement) return;
-    if(rotation >= 360) rotation = 0;
+    if (rotation >= 360) rotation = 0;
     else rotation -= 90;
     updateImage();
 })
+
+// when user click on horizontal flip icon this function will run
+mirror.addEventListener("click", (e) => {
+    if (!imgElement) return;
+    flipX = flipX * -1;
+    updateImage();
+})  
