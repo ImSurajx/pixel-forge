@@ -122,8 +122,8 @@ async function brightness(value) {
 // each slider logic are present here
 inputsRange.forEach((ele) => {
     if (ele.id === "brightness") {
-        // if (!imgElement) return;
         ele.addEventListener("input", (e) => {
+            if (!imgElement) return;
             document.querySelector('.bright').textContent = `${e.target.value}%`;
             brightness((e.target.value - 100));
         })
