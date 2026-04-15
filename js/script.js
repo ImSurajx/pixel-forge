@@ -1,6 +1,5 @@
 // genral variables
 let imgElement = null;
-let originalImage = null;
 
 // all the requried field to get image into img container
 let selectImg = document.querySelector('#choose-image');
@@ -41,32 +40,12 @@ selectImg.addEventListener("change", (e) => {
         rotation = 0;
         flipX = 1;
         img.src = URL.createObjectURL(file);
-        originalImage = URL.createObjectURL(file);
         imageInputLable.hidden = true;
         imgContainer.appendChild(img);
         isImage = true;
         imgElement = img;
     }
 })
-
-
-function loadImageToCanvas() {
-    return new Promise((resolve, reject) => {
-        let image = new Image();
-        image.src = originalImage;
-        image.onload = () => {
-            let canvas = document.createElement('canvas');
-            canvas.width = image.naturalWidth;
-            canvas.height = image.naturalHeight;
-            let ctx = canvas.getContext("2d");
-            ctx.drawImage(image, 0, 0);
-            resolve (canvas);
-        }
-        image.onerror = () => {
-            reject(new Error("image not loaded"))
-        }
-    })
-}
 
 // when user click zoom-in button this function will run
 zoomIn.addEventListener("click", (e) => {
