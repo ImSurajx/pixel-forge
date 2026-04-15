@@ -23,9 +23,32 @@ let rotation = 0;
 let mirror = document.querySelector('.ri-flip-horizontal-line');
 let flipX = 1;
 
+// adjustments
+let inputsRange = document.querySelectorAll('input[type="range"]');
+
+
 // this function update image according to user tool
 function updateImage() {
     imgElement.style.transform = `rotate(${rotation}deg) scaleX(${scale * flipX}) scaleY(${scale})`;
+}
+
+// creating a canvas in which i load the imgae.
+function loadImageToCanvas() {
+    return new Promise((resolve, reject) => {
+        let image = new Image();
+        image.src = url;
+        image.onload = function () {
+            let canvas = document.createElement('canvas');
+            canvas.height = image.naturalHeight;
+            canvas.width = image.naturalWidth;
+            const ctx = canvas.getContext("2d");
+            ctx.drawImage(image, 0, 0);
+            resolve(canvas);
+        }
+        image.onerror = function () {
+            reject(`image not loaded`);
+        };
+    })
 }
 
 // create image & replace it with our container.
@@ -80,21 +103,22 @@ mirror.addEventListener("click", (e) => {
     updateImage();
 })
 
-// creating a canvas in which i load the imgae.
-function loadImageToCanvas() {
-    return new Promise((resolve, reject) => {
-        let image = new Image();
-        image.src = url;
-        image.onload = function () {
-            let canvas = document.createElement('canvas');
-            canvas.height = image.naturalHeight;
-            canvas.width = image.naturalWidth;
-            const ctx = canvas.getContext("2d");
-            ctx.drawImage(image, 0, 0);
-            resolve(canvas);
-        }
-        image.onerror = function(){
-            reject(`image not loaded`);
-        };
-    })
+// canvas setup and image loading pipeline
+async function brightness(value) {
+    const canvas = await loadImageToCanvas();
+    const ctx = canvas.getContext("2d");
+    const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+    console.log(imageData.data);
+    for (let i = 0; i < imageData.data.length; i += 4) {
+        imageData.data[i] = Math.max(0, Math.min(255, imageData.data[i] + value));
+        imageData.data[i + 1] = Math.max(0, Math.min(255, imageData.data[i + 1] + value));
+        imageData.data[i + 2] = Math.max(0, Math.min(255, imageData.data[i + 2] + value));
+    }
+    ctx.putImageData(imageData, 0, 0);
+    let dataURL = canvas.toDataURL();
+    imgElement.src = dataURL;
 }
+
+
+
+
