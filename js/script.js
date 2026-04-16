@@ -103,28 +103,84 @@ mirror.addEventListener("click", (e) => {
     updateImage();
 })
 
-// canvas setup and image loading pipeline
-async function brightness(value) {
-    const canvas = await loadImageToCanvas();
-    const ctx = canvas.getContext("2d");
-    const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-    for (let i = 0; i < imageData.data.length; i += 4) {
-        imageData.data[i] = Math.max(0, Math.min(255, imageData.data[i] + value));
-        imageData.data[i + 1] = Math.max(0, Math.min(255, imageData.data[i + 1] + value));
-        imageData.data[i + 2] = Math.max(0, Math.min(255, imageData.data[i + 2] + value));
-    }
-    ctx.putImageData(imageData, 0, 0);
-    let dataURL = canvas.toDataURL();
-    imgElement.src = dataURL;
+// // canvas setup and image loading pipeline
+// async function brightness(value) {
+//     const canvas = await loadImageToCanvas();
+//     const ctx = canvas.getContext("2d");
+//     const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+//     for (let i = 0; i < imageData.data.length; i += 4) {
+//         imageData.data[i] = Math.max(0, Math.min(255, imageData.data[i] + value));
+//         imageData.data[i + 1] = Math.max(0, Math.min(255, imageData.data[i + 1] + value));
+//         imageData.data[i + 2] = Math.max(0, Math.min(255, imageData.data[i + 2] + value));
+//     }
+//     ctx.putImageData(imageData, 0, 0);
+//     let dataURL = canvas.toDataURL();
+//     imgElement.src = dataURL;
+// }
+
+// // contrast
+// async function contrast(value) {
+//     const canvas = await loadImageToCanvas();
+//     const ctx = canvas.getContext("2d");
+//     const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+//     const factor = (259 * (value + 255)) / (255 * (259 - value)); // 0 < 1 < 2+
+//     for (let i = 0; i < imageData.data.length; i += 4) {
+//         let R = (imageData.data[i] - 128) * factor + 128;
+//         let G = (imageData.data[i + 1] - 128) * factor + 128;
+//         let B = (imageData.data[i + 2] - 128) * factor + 128;
+//         imageData.data[i] = Math.max(0, Math.min(255, R));
+//         imageData.data[i + 1] = Math.max(0, Math.min(255, G));
+//         imageData.data[i + 2] = Math.max(0, Math.min(255, B));
+//     }
+//     ctx.putImageData(imageData, 0, 0);
+//     let dataURL = canvas.toDataURL();
+//     imgElement.src = dataURL;
+// }
+
+// global state for all the sliders
+const state = {
+    brightness: 0,
+    contrast: 0,
+    saturation: 0,
+    hue: 0,
+    exposure: 0,
 }
 
-// contrast
-async function contrast(value) {
+// each slider logic are present here
+inputsRange.forEach((ele) => {
+    if (ele.id === "brightness") {
+        ele.addEventListener("input", (e) => {
+            if (!imgElement) return;
+            document.querySelector('.bright').textContent = `${e.target.value}%`;
+            state.brightness = e.target.value - 100;
+            applyAllEffect(state);
+        })
+    }
+    if (ele.id === "contrast") {
+        ele.addEventListener("input", (e) => {
+            if (!imgElement) return;
+            document.querySelector('.contra').textContent = `${e.target.value}%`;
+            state.contrast = e.target.value - 100;
+            applyAllEffect(state);
+        })
+    }
+})
+
+
+
+async function applyAllEffect(state) {
     const canvas = await loadImageToCanvas();
-    const ctx = canvas.getContext("2d");
+    const ctx = canvas.getContext("2d")
     const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-    const factor = (259 * (value + 255)) / (255 * (259 - value)); // 0 < 1 < 2+
+    let brightnessValue = state.brightness;
+    let contrastValue = state.contrast;
+    const factor = (259 * (contrastValue + 255)) / (255 * (259 - contrastValue)); // 0 < 1 < 2+ ->  for contrast
     for (let i = 0; i < imageData.data.length; i += 4) {
+        // this part of loop for update brightness
+        imageData.data[i] = Math.max(0, Math.min(255, imageData.data[i] + brightnessValue));
+        imageData.data[i + 1] = Math.max(0, Math.min(255, imageData.data[i + 1] + brightnessValue));
+        imageData.data[i + 2] = Math.max(0, Math.min(255, imageData.data[i + 2] + brightnessValue));
+        // this part of loop for update contrast
         let R = (imageData.data[i] - 128) * factor + 128;
         let G = (imageData.data[i + 1] - 128) * factor + 128;
         let B = (imageData.data[i + 2] - 128) * factor + 128;
@@ -136,34 +192,5 @@ async function contrast(value) {
     let dataURL = canvas.toDataURL();
     imgElement.src = dataURL;
 }
-
-// each slider logic are present here
-inputsRange.forEach((ele) => {
-    if (ele.id === "brightness") {
-        ele.addEventListener("input", (e) => {
-            if (!imgElement) return;
-            document.querySelector('.bright').textContent = `${e.target.value}%`;
-            brightness((e.target.value - 100));
-        })
-    }
-    if (ele.id === "contrast") {
-        ele.addEventListener("input", (e) => {
-            if (!imgElement) return;
-            document.querySelector('.contra').textContent = `${e.target.value}%`;
-            contrast((e.target.value - 100));
-        })
-    }
-})
-
-// global state for all the sliders
-const state = {
-    brightness: 0,
-    contrast: 0,
-    saturation: 0,
-    hue: 0,
-    exposure: 0,
-}
-
-
 
 
