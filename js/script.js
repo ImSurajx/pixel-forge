@@ -1,6 +1,6 @@
 // genral variables
 let imgElement = null;
-let url = null;
+let originalImage = null;
 
 // all the requried field to get image into img container
 let selectImg = document.querySelector('#choose-image');
@@ -36,7 +36,7 @@ function updateImage() {
 function loadImageToCanvas() {
     return new Promise((resolve, reject) => {
         let image = new Image();
-        image.src = url;
+        image.src = originalImage;
         image.onload = function () {
             let canvas = document.createElement('canvas');
             canvas.height = image.naturalHeight;
@@ -63,8 +63,8 @@ selectImg.addEventListener("change", (e) => {
         scale = 1;
         rotation = 0;
         flipX = 1;
-        url = URL.createObjectURL(file);
-        img.src = url;
+        originalImage = URL.createObjectURL(file);
+        img.src = originalImage;
         imageInputLable.hidden = true;
         imgContainer.appendChild(img);
         isImage = true;
@@ -154,5 +154,16 @@ inputsRange.forEach((ele) => {
         })
     }
 })
+
+// global state for all the sliders
+const state = {
+    brightness: 0,
+    contrast: 0,
+    saturation: 0,
+    hue: 0,
+    exposure: 0,
+}
+
+
 
 
