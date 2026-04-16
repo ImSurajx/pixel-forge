@@ -108,11 +108,29 @@ async function brightness(value) {
     const canvas = await loadImageToCanvas();
     const ctx = canvas.getContext("2d");
     const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-    console.log(imageData.data);
     for (let i = 0; i < imageData.data.length; i += 4) {
         imageData.data[i] = Math.max(0, Math.min(255, imageData.data[i] + value));
         imageData.data[i + 1] = Math.max(0, Math.min(255, imageData.data[i + 1] + value));
         imageData.data[i + 2] = Math.max(0, Math.min(255, imageData.data[i + 2] + value));
+    }
+    ctx.putImageData(imageData, 0, 0);
+    let dataURL = canvas.toDataURL();
+    imgElement.src = dataURL;
+}
+
+// contrast
+async function contrast(value) {
+    const canvas = await loadImageToCanvas();
+    const ctx = canvas.getContext("2d");
+    const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+    const factor = (259 * (value + 255)) / (255 * (259 - value)); // 0 < 1 < 2
+    for (let i = 0; i < imageData.data.length; i += 4) {
+        let R = (data[i] - 128) * factor + 128;
+        let G = (data[i + 1] - 128) * factor + 128;
+        let B = (data[i + 2] - 128) * factor + 128;
+        imageData.data[i] = Math.max(0, Math.min(255, R + value));
+        imageData.data[i + 1] = Math.max(0, Math.min(255, G + value));
+        imageData.data[i + 2] = Math.max(0, Math.min(255, B + value));
     }
     ctx.putImageData(imageData, 0, 0);
     let dataURL = canvas.toDataURL();
