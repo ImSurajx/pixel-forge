@@ -123,14 +123,14 @@ async function contrast(value) {
     const canvas = await loadImageToCanvas();
     const ctx = canvas.getContext("2d");
     const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-    const factor = (259 * (value + 255)) / (255 * (259 - value)); // 0 < 1 < 2
+    const factor = (259 * (value + 255)) / (255 * (259 - value)); // 0 < 1 < 2+
     for (let i = 0; i < imageData.data.length; i += 4) {
-        let R = (data[i] - 128) * factor + 128;
-        let G = (data[i + 1] - 128) * factor + 128;
-        let B = (data[i + 2] - 128) * factor + 128;
-        imageData.data[i] = Math.max(0, Math.min(255, R + value));
-        imageData.data[i + 1] = Math.max(0, Math.min(255, G + value));
-        imageData.data[i + 2] = Math.max(0, Math.min(255, B + value));
+        let R = (imageData.data[i] - 128) * factor + 128;
+        let G = (imageData.data[i + 1] - 128) * factor + 128;
+        let B = (imageData.data[i + 2] - 128) * factor + 128;
+        imageData.data[i] = Math.max(0, Math.min(255, R));
+        imageData.data[i + 1] = Math.max(0, Math.min(255, G));
+        imageData.data[i + 2] = Math.max(0, Math.min(255, B));
     }
     ctx.putImageData(imageData, 0, 0);
     let dataURL = canvas.toDataURL();
@@ -144,6 +144,13 @@ inputsRange.forEach((ele) => {
             if (!imgElement) return;
             document.querySelector('.bright').textContent = `${e.target.value}%`;
             brightness((e.target.value - 100));
+        })
+    }
+    if (ele.id === "contrast") {
+        ele.addEventListener("input", (e) => {
+            if (!imgElement) return;
+            document.querySelector('.contra').textContent = `${e.target.value}%`;
+            contrast((e.target.value - 100));
         })
     }
 })
