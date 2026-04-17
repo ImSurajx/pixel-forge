@@ -113,9 +113,9 @@ mirror.addEventListener("click", (e) => {
 const state = {
     brightness: 0,
     contrast: 0,
-    saturation: 0,
+    saturation: 100,
     hue: 0,
-    exposure: 0,
+    exposure: 100,
 }
 
 // each slider logic are present here
@@ -144,9 +144,19 @@ inputsRange.forEach((ele) => {
             applyAllEffects(state);
         })
     }
+    if (ele.id === "exposure") {
+        ele.addEventListener("input", (e) => {
+            if (!imgElement) return;
+            document.querySelector('.expo').textContent = `${e.target.value}%`;
+            state.exposure = Number(e.target.value);
+            applyAllEffects(state);
+        })
+    }
+
 })
 
 async function applyAllEffects(state) {
+    if (!originalImage) return;
     const canvas = await loadImageToCanvas();
     const ctx = canvas.getContext("2d")
     const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
@@ -154,6 +164,7 @@ async function applyAllEffects(state) {
     let contrastValue = state.contrast;
     const contrastFactor = (259 * (contrastValue + 255)) / (255 * (259 - contrastValue)); // 0 < 1 < 2+ ->  for contrast
     const saturationFactor = state.saturation / 100;
+    const exposureFactor = 1 + (state.exposure - 100) / 100;
     for (let i = 0; i < imageData.data.length; i += 4) {
         let R = imageData.data[i];
         let G = imageData.data[i + 1];
@@ -171,6 +182,10 @@ async function applyAllEffects(state) {
         R = gray + (R - gray) * saturationFactor;
         G = gray + (G - gray) * saturationFactor;
         B = gray + (B - gray) * saturationFactor;
+        // this part of loop for the exposure
+        R = 128 + (R - 128) * exposureFactor
+        G = 128 + (G - 128) * exposureFactor
+        B = 128 + (B - 128) * exposureFactor
         // this part make value with-in the range of the RGB
         imageData.data[i] = clamp(R);
         imageData.data[i + 1] = clamp(G);
