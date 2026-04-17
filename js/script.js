@@ -119,7 +119,7 @@ inputsRange.forEach((ele) => {
             if (!imgElement) return;
             document.querySelector('.bright').textContent = `${e.target.value}%`;
             state.brightness = e.target.value - 100;
-            applyAllEffect(state);
+            applyAllEffects(state);
         })
     }
     if (ele.id === "contrast") {
@@ -127,14 +127,12 @@ inputsRange.forEach((ele) => {
             if (!imgElement) return;
             document.querySelector('.contra').textContent = `${e.target.value}%`;
             state.contrast = e.target.value - 100;
-            applyAllEffect(state);
+            applyAllEffects(state);
         })
     }
 })
 
-
-
-async function applyAllEffect(state) {
+async function applyAllEffects(state) {
     const canvas = await loadImageToCanvas();
     const ctx = canvas.getContext("2d")
     const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
@@ -142,14 +140,17 @@ async function applyAllEffect(state) {
     let contrastValue = state.contrast;
     const factor = (259 * (contrastValue + 255)) / (255 * (259 - contrastValue)); // 0 < 1 < 2+ ->  for contrast
     for (let i = 0; i < imageData.data.length; i += 4) {
+        let R = imageData.data[i];
+        let G = imageData.data[i + 1];
+        let B = imageData.data[i + 2];
         // this part of loop for update brightness
-        imageData.data[i] = Math.max(0, Math.min(255, imageData.data[i] + brightnessValue));
-        imageData.data[i + 1] = Math.max(0, Math.min(255, imageData.data[i + 1] + brightnessValue));
-        imageData.data[i + 2] = Math.max(0, Math.min(255, imageData.data[i + 2] + brightnessValue));
+        R += brightnessValue;
+        G += brightnessValue;
+        B += brightnessValue;
         // this part of loop for update contrast
-        let R = (imageData.data[i] - 128) * factor + 128;
-        let G = (imageData.data[i + 1] - 128) * factor + 128;
-        let B = (imageData.data[i + 2] - 128) * factor + 128;
+        R = (R - 128) * factor + 128;
+        G = (G - 128) * factor + 128;
+        B = (B - 128) * factor + 128;
         imageData.data[i] = Math.max(0, Math.min(255, R));
         imageData.data[i + 1] = Math.max(0, Math.min(255, G));
         imageData.data[i + 2] = Math.max(0, Math.min(255, B));
