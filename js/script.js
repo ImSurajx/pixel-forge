@@ -32,6 +32,10 @@ function updateImage() {
     imgElement.style.transform = `rotate(${rotation}deg) scaleX(${scale * flipX}) scaleY(${scale})`;
 }
 
+// this function make value witin the required range accoridng to RGB
+function clamp(value) {
+    return Math.max(0, Math.min(255, value))
+}
 
 
 // creating a canvas in which i load the imgae.
@@ -120,7 +124,7 @@ inputsRange.forEach((ele) => {
         ele.addEventListener("input", (e) => {
             if (!imgElement) return;
             document.querySelector('.bright').textContent = `${e.target.value}%`;
-            state.brightness = e.target.value - 100;
+            state.brightness = Number(e.target.value) - 100;
             applyAllEffects(state);
         })
     }
@@ -128,16 +132,11 @@ inputsRange.forEach((ele) => {
         ele.addEventListener("input", (e) => {
             if (!imgElement) return;
             document.querySelector('.contra').textContent = `${e.target.value}%`;
-            state.contrast = e.target.value - 100;
+            state.contrast = Number(e.target.value) - 100;
             applyAllEffects(state);
         })
     }
 })
-
-// this function make value witin the required range accoridng to RGB
-function clamp(value) {
-    return Math.max(0, Math.min(255, value))
-}
 
 async function applyAllEffects(state) {
     const canvas = await loadImageToCanvas();
