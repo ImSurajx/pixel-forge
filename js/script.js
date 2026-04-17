@@ -32,6 +32,8 @@ function updateImage() {
     imgElement.style.transform = `rotate(${rotation}deg) scaleX(${scale * flipX}) scaleY(${scale})`;
 }
 
+
+
 // creating a canvas in which i load the imgae.
 function loadImageToCanvas() {
     return new Promise((resolve, reject) => {
@@ -132,6 +134,11 @@ inputsRange.forEach((ele) => {
     }
 })
 
+// this function make value witin the required range accoridng to RGB
+function clamp(value) {
+    return Math.max(0, Math.min(255, value))
+}
+
 async function applyAllEffects(state) {
     const canvas = await loadImageToCanvas();
     const ctx = canvas.getContext("2d")
@@ -151,9 +158,10 @@ async function applyAllEffects(state) {
         R = (R - 128) * factor + 128;
         G = (G - 128) * factor + 128;
         B = (B - 128) * factor + 128;
-        imageData.data[i] = Math.max(0, Math.min(255, R));
-        imageData.data[i + 1] = Math.max(0, Math.min(255, G));
-        imageData.data[i + 2] = Math.max(0, Math.min(255, B));
+        // this part make value with-in the range of the RGB
+        imageData.data[i] = clamp(R);
+        imageData.data[i + 1] = clamp(G);
+        imageData.data[i + 2] = clamp(B);
     }
     ctx.putImageData(imageData, 0, 0);
     let dataURL = canvas.toDataURL();
