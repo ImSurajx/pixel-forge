@@ -136,6 +136,14 @@ inputsRange.forEach((ele) => {
             applyAllEffects(state);
         })
     }
+    if (ele.id === "saturation") {
+        ele.addEventListener("input", (e) => {
+            if (!imgElement) return;
+            document.querySelector('.satura').textContent = `${e.target.value}%`;
+            state.saturation = Number(e.target.value);
+            applyAllEffects(state);
+        })
+    }
 })
 
 async function applyAllEffects(state) {
@@ -144,7 +152,8 @@ async function applyAllEffects(state) {
     const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
     let brightnessValue = state.brightness;
     let contrastValue = state.contrast;
-    const factor = (259 * (contrastValue + 255)) / (255 * (259 - contrastValue)); // 0 < 1 < 2+ ->  for contrast
+    const contrastFactor = (259 * (contrastValue + 255)) / (255 * (259 - contrastValue)); // 0 < 1 < 2+ ->  for contrast
+    const saturationFactor = state.saturation / 100;
     for (let i = 0; i < imageData.data.length; i += 4) {
         let R = imageData.data[i];
         let G = imageData.data[i + 1];
@@ -154,9 +163,14 @@ async function applyAllEffects(state) {
         G += brightnessValue;
         B += brightnessValue;
         // this part of loop for update contrast
-        R = (R - 128) * factor + 128;
-        G = (G - 128) * factor + 128;
-        B = (B - 128) * factor + 128;
+        R = (R - 128) * contrastFactor + 128;
+        G = (G - 128) * contrastFactor + 128;
+        B = (B - 128) * contrastFactor + 128;
+        // this part of loop for the saturation
+        let gray = (0.299 * R) + (0.587 * G) + (0.114 * B);
+        R = gray + (R - gray) * saturationFactor;
+        G = gray + (G - gray) * saturationFactor;
+        B = gray + (B - gray) * saturationFactor;
         // this part make value with-in the range of the RGB
         imageData.data[i] = clamp(R);
         imageData.data[i + 1] = clamp(G);
