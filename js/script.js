@@ -26,6 +26,120 @@ let flipX = 1;
 // adjustments
 let inputsRange = document.querySelectorAll('input[type="range"]');
 
+// create object for presets
+const presets = {
+    vivid: {
+        brightness: 15,
+        contrast: 30,
+        saturation: 150,
+        hue: 0,
+        exposure: 105
+    },
+
+    mono: {
+        brightness: 0,
+        contrast: 20,
+        saturation: 0,
+        hue: 0,
+        exposure: 100
+    },
+
+    sepia: {
+        brightness: 10,
+        contrast: 15,
+        saturation: 60,
+        hue: 25,
+        exposure: 105
+    },
+
+    "cool-arctic": {
+        brightness: 5,
+        contrast: 10,
+        saturation: 110,
+        hue: 180,
+        exposure: 100
+    },
+
+    "warm-glow": {
+        brightness: 12,
+        contrast: 15,
+        saturation: 125,
+        hue: 20,
+        exposure: 110
+    },
+
+    cinematic: {
+        brightness: -5,
+        contrast: 35,
+        saturation: 85,
+        hue: -10,
+        exposure: 95
+    },
+
+    vintage: {
+        brightness: 8,
+        contrast: 10,
+        saturation: 70,
+        hue: 18,
+        exposure: 102
+    },
+
+    sunset: {
+        brightness: 18,
+        contrast: 20,
+        saturation: 145,
+        hue: 30,
+        exposure: 108
+    },
+
+    "neon-pop": {
+        brightness: 10,
+        contrast: 40,
+        saturation: 180,
+        hue: 50,
+        exposure: 100
+    },
+
+    "forest-tone": {
+        brightness: 0,
+        contrast: 18,
+        saturation: 120,
+        hue: 100,
+        exposure: 98
+    },
+
+    "black-gold": {
+        brightness: -8,
+        contrast: 35,
+        saturation: 65,
+        hue: 35,
+        exposure: 92
+    },
+
+    "soft-pastel": {
+        brightness: 15,
+        contrast: -10,
+        saturation: 80,
+        hue: 10,
+        exposure: 112
+    },
+
+    "icy-blue": {
+        brightness: 5,
+        contrast: 12,
+        saturation: 115,
+        hue: 210,
+        exposure: 102
+    },
+
+    dramatic: {
+        brightness: -10,
+        contrast: 45,
+        saturation: 95,
+        hue: 0,
+        exposure: 90
+    }
+};
 
 // this function update image according to user tool
 function updateImage() {
@@ -36,7 +150,6 @@ function updateImage() {
 function clamp(value) {
     return Math.max(0, Math.min(255, value))
 }
-
 
 // creating a canvas in which i load the imgae.
 function loadImageToCanvas() {
