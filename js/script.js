@@ -59,7 +59,7 @@ function loadImageToCanvas() {
 
 // this function calculate the calculate the value of HUE
 function calculateHue(R, G, B) {
-    let H = null;
+    let H = 0;
     let r = R / 255;
     let g = G / 255;
     let b = B / 255;
@@ -70,6 +70,7 @@ function calculateHue(R, G, B) {
     else if (max == r) H = 60 * ((g - b) / delta % 6);
     else if (max == g) H = 60 * ((b - r) / delta + 2);
     else if (max == b) H = 60 * ((r - g) / delta + 4);
+    if(H < 0) H += 360;
     return H;
 }
 
