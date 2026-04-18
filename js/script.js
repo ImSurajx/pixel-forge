@@ -57,6 +57,22 @@ function loadImageToCanvas() {
     })
 }
 
+// this function calculate the calculate the value of HUE
+function calculateHue(R, G, B) {
+    let H = null;
+    let r = R / 255;
+    let g = G / 255;
+    let b = B / 255;
+    let max = Math.max(r, g, b);
+    let min = Math.min(r, g, b);
+    let delta = max - min;
+    if (delta == 0) H = 0;
+    else if (max == r) H = 60 * ((g - b) / delta % 6);
+    else if (max == g) H = 60 * ((b - r) / delta + 2);
+    else if (max == b) H = 60 * ((r - g) / delta + 4);
+    return H;
+}
+
 // create image & replace it with our container.
 selectImg.addEventListener("change", (e) => {
     let img = document.createElement('img');
@@ -182,6 +198,8 @@ async function applyAllEffects(state) {
         R = gray + (R - gray) * saturationFactor;
         G = gray + (G - gray) * saturationFactor;
         B = gray + (B - gray) * saturationFactor;
+        // this part of loop for the hue
+        let H = calculateHue(R, G, B);
         // this part of loop for the exposure
         R = 128 + (R - 128) * exposureFactor
         G = 128 + (G - 128) * exposureFactor
