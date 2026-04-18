@@ -331,6 +331,21 @@ async function applyAllEffects(state) {
     imgElement.src = dataURL;
 }
 
+// this function match ui state with slider state
+function syncStateToSliders(brightness, constrast, saturation, hue, exposure) {
+    inputsRange[0].value = brightness;
+    document.querySelector('.bright').textContent = `${brightness}%`;
+    inputsRange[1].value = constrast;
+    document.querySelector('.contra').textContent = `${constrast}%`;
+    inputsRange[2].value = saturation;
+    document.querySelector('.satura').textContent = `${saturation}%`;
+    inputsRange[3].value = hue;
+    document.querySelector('.hue').textContent = `${Math.abs(hue)}°`;
+    inputsRange[4].value = exposure;
+    document.querySelector('.expo').textContent = `${exposure}%`;
+
+}
+
 // create image & replace it with our container.
 selectImg.addEventListener("change", (e) => {
     let img = document.createElement('img');
@@ -430,10 +445,18 @@ inputsRange.forEach((ele) => {
 
 // apply filters according to user click
 filterContainer.addEventListener('click', (e) => {
-    if(!imgElement) return;
+    if (!imgElement) return;
     allFilters.forEach((ele) => {
-        if(e.target == ele){
-            applyAllEffects(presets[ele.id]);
+        if (e.target == ele) {
+            let obj = presets[ele.id];
+            // make state according to filter then pass in effects;
+            state.brightness = obj.brightness;
+            state.contrast = obj.contrast;
+            state.saturation = obj.saturation;
+            state.hue = obj.hue;
+            state.exposure = obj.exposure;
+            syncStateToSliders((state.brightness + 100), (state.contrast+100), state.saturation, state.hue, state.exposure);
+            applyAllEffects(state);
         }
     })
 })
