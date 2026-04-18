@@ -70,8 +70,30 @@ function calculateHue(R, G, B) {
     else if (max == r) H = 60 * ((g - b) / delta % 6);
     else if (max == g) H = 60 * ((b - r) / delta + 2);
     else if (max == b) H = 60 * ((r - g) / delta + 4);
-    if(H < 0) H += 360;
+    if (H < 0) H += 360;
     return H;
+}
+
+// this function convert RGB color codes to HSL color codes
+function rgbToHsl(R, G, B) {
+    let hsl = {
+        h: 0,
+        s: 0,
+        l: 0,
+    }
+    hsl.h = calculateHue(R, G, B);
+    let r = R / 255;
+    let g = G / 255;
+    let b = B / 255;
+    let max = Math.max(r, g, b);
+    let min = Math.min(r, g, b);
+    let delta = max - min;
+    hsl.l = (max + min) / 2;
+    if (delta == 0) hsl.s = 0;
+    else {
+        hsl.s = delta / (1 - Math.abs(2 * hsl.l - 1));
+    }
+    return hsl;
 }
 
 // create image & replace it with our container.
