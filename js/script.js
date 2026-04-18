@@ -26,8 +26,10 @@ let flipX = 1;
 // adjustments
 let inputsRange = document.querySelectorAll('input[type="range"]');
 
-// select all filters
+// filters
 let allFilters = document.querySelectorAll('.filter-type-x');
+let filterContainer = document.querySelector('.filter-container');
+
 
 // create object for presets
 const presets = {
@@ -143,6 +145,7 @@ const presets = {
         exposure: 90
     }
 };
+
 
 // global state for all the sliders
 const state = {
@@ -425,7 +428,15 @@ inputsRange.forEach((ele) => {
 
 })
 
-
+// apply filters according to user click
+filterContainer.addEventListener('click', (e) => {
+    if(!imgElement) return;
+    allFilters.forEach((ele) => {
+        if(e.target == ele){
+            applyAllEffects(presets[ele.id]);
+        }
+    })
+})
 
 
 
