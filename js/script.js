@@ -26,6 +26,8 @@ let flipX = 1;
 // adjustments
 let inputsRange = document.querySelectorAll('input[type="range"]');
 
+// select all filters
+let allFilters = document.querySelectorAll('.filter-type');
 // create object for presets
 const presets = {
     vivid: {
