@@ -122,7 +122,6 @@
   -webkit-user-select: none;
      -moz-user-select: none;
           user-select: none;
-  cursor: pointer;
 }
 
 html,
@@ -185,6 +184,7 @@ main .container .presets {
   display: flex;
   flex-direction: column;
   overflow: hidden;
+  cursor: pointer;
 }
 main .container .presets .details {
   margin-bottom: var(--space-5);
@@ -210,6 +210,7 @@ main .container .presets .filter-container {
 }
 main .container .presets .filter-container .outer {
   border: 1px solid #fff;
+  background: var(--color-bg);
   padding: 0.3rem;
   aspect-ratio: 4/3;
   border-radius: var(--radius-sm);
@@ -217,10 +218,19 @@ main .container .presets .filter-container .outer {
   flex-direction: column;
 }
 main .container .presets .filter-container .outer .img-preview {
+  overflow: hidden;
   border: 1px solid #fff;
   flex: 1;
   margin-bottom: var(--space-1);
   border-radius: var(--radius-xs);
+}
+main .container .presets .filter-container .outer img {
+  height: 100%;
+  width: 100%;
+  -o-object-fit: cover;
+     object-fit: cover;
+  -o-object-position: center;
+     object-position: center;
 }
 main .container .presets .filter-container .outer .filter-type {
   font-size: var(--font-size-xxs);
