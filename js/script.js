@@ -225,7 +225,7 @@ inputsRange.forEach((ele) => {
             applyAllEffects(state);
         })
     }
-    if (ele.id === "contrast") {
+    else if (ele.id === "contrast") {
         ele.addEventListener("input", (e) => {
             if (!imgElement) return;
             document.querySelector('.contra').textContent = `${e.target.value}%`;
@@ -233,7 +233,7 @@ inputsRange.forEach((ele) => {
             applyAllEffects(state);
         })
     }
-    if (ele.id === "saturation") {
+    else if (ele.id === "saturation") {
         ele.addEventListener("input", (e) => {
             if (!imgElement) return;
             document.querySelector('.satura').textContent = `${e.target.value}%`;
@@ -241,11 +241,19 @@ inputsRange.forEach((ele) => {
             applyAllEffects(state);
         })
     }
-    if (ele.id === "exposure") {
+    else if (ele.id === "exposure") {
         ele.addEventListener("input", (e) => {
             if (!imgElement) return;
             document.querySelector('.expo').textContent = `${e.target.value}%`;
             state.exposure = Number(e.target.value);
+            applyAllEffects(state);
+        })
+    }
+    else if (ele.id === "hue") {
+        ele.addEventListener("input", (e) => {
+            if (!imgElement) return;
+            document.querySelector('.hue').textContent = `${e.target.value}°`;
+            state.hue = Number(e.target.value);
             applyAllEffects(state);
         })
     }
@@ -280,9 +288,12 @@ async function applyAllEffects(state) {
         G = gray + (G - gray) * saturationFactor;
         B = gray + (B - gray) * saturationFactor;
         // this part of loop for the hue
-        let H = calculateHue(R, G, B);
         let hsl = rgbToHsl(R, G, B);
         hsl.h = (hsl.h + state.hue + 360) % 360;
+        let rgb = hslToRgb(hsl.h, hsl.s, hsl.l)
+        R = rgb.r;
+        G = rgb.g;
+        B = rgb.b;
         // this part of loop for the exposure
         R = 128 + (R - 128) * exposureFactor
         G = 128 + (G - 128) * exposureFactor
