@@ -282,6 +282,21 @@ function hslToRgb(h, s, l) {
     return rgb;
 }
 
+// this function match ui state with slider state
+function syncStateToSliders(brightness, constrast, saturation, hue, exposure) {
+    inputsRange[0].value = brightness;
+    document.querySelector('.bright').textContent = `${brightness}%`;
+    inputsRange[1].value = constrast;
+    document.querySelector('.contra').textContent = `${constrast}%`;
+    inputsRange[2].value = saturation;
+    document.querySelector('.satura').textContent = `${saturation}%`;
+    inputsRange[3].value = hue;
+    document.querySelector('.hue').textContent = `${Math.abs(hue)}°`;
+    inputsRange[4].value = exposure;
+    document.querySelector('.expo').textContent = `${exposure}%`;
+
+}
+
 // apply effects according to sliders
 async function applyAllEffects(state) {
     if (!originalImage) return;
@@ -327,24 +342,21 @@ async function applyAllEffects(state) {
         imageData.data[i + 2] = clamp(B);
     }
     ctx.putImageData(imageData, 0, 0);
-    let dataURL = canvas.toDataURL();
-    imgElement.src = dataURL;
+    return canvas.toDataURL();
 }
 
-// this function match ui state with slider state
-function syncStateToSliders(brightness, constrast, saturation, hue, exposure) {
-    inputsRange[0].value = brightness;
-    document.querySelector('.bright').textContent = `${brightness}%`;
-    inputsRange[1].value = constrast;
-    document.querySelector('.contra').textContent = `${constrast}%`;
-    inputsRange[2].value = saturation;
-    document.querySelector('.satura').textContent = `${saturation}%`;
-    inputsRange[3].value = hue;
-    document.querySelector('.hue').textContent = `${Math.abs(hue)}°`;
-    inputsRange[4].value = exposure;
-    document.querySelector('.expo').textContent = `${exposure}%`;
-
+async function renderMainPreview(state, img) {
+    let url = await applyAllEffects(state);
+    img.src = url;
 }
+
+// load image into thumnail
+function loadThumbnail() {
+    allFilters.forEach((ele) => {
+        renderMainPreview(presets[ele.id], ele);
+    })
+}
+
 
 // create image & replace it with our container.
 selectImg.addEventListener("change", (e) => {
@@ -364,6 +376,7 @@ selectImg.addEventListener("change", (e) => {
         imgContainer.appendChild(img);
         isImage = true;
         imgElement = img;
+        loadThumbnail();
     }
 })
 
@@ -405,7 +418,7 @@ inputsRange.forEach((ele) => {
             if (!imgElement) return;
             document.querySelector('.bright').textContent = `${e.target.value}%`;
             state.brightness = Number(e.target.value) - 100;
-            applyAllEffects(state);
+            renderMainPreview(state, imgElement);
         })
     }
     else if (ele.id === "contrast") {
@@ -413,7 +426,7 @@ inputsRange.forEach((ele) => {
             if (!imgElement) return;
             document.querySelector('.contra').textContent = `${e.target.value}%`;
             state.contrast = Number(e.target.value) - 100;
-            applyAllEffects(state);
+            renderMainPreview(state, imgElement);
         })
     }
     else if (ele.id === "saturation") {
@@ -421,7 +434,7 @@ inputsRange.forEach((ele) => {
             if (!imgElement) return;
             document.querySelector('.satura').textContent = `${e.target.value}%`;
             state.saturation = Number(e.target.value);
-            applyAllEffects(state);
+            renderMainPreview(state, imgElement);
         })
     }
     else if (ele.id === "exposure") {
@@ -429,7 +442,7 @@ inputsRange.forEach((ele) => {
             if (!imgElement) return;
             document.querySelector('.expo').textContent = `${e.target.value}%`;
             state.exposure = Number(e.target.value);
-            applyAllEffects(state);
+            renderMainPreview(state, imgElement);
         })
     }
     else if (ele.id === "hue") {
@@ -437,7 +450,7 @@ inputsRange.forEach((ele) => {
             if (!imgElement) return;
             document.querySelector('.hue').textContent = `${e.target.value}°`;
             state.hue = Number(e.target.value);
-            applyAllEffects(state);
+            renderMainPreview(state, imgElement);
         })
     }
 
@@ -455,8 +468,8 @@ filterContainer.addEventListener('click', (e) => {
             state.saturation = obj.saturation;
             state.hue = obj.hue;
             state.exposure = obj.exposure;
-            syncStateToSliders((state.brightness + 100), (state.contrast+100), state.saturation, state.hue, state.exposure);
-            applyAllEffects(state);
+            syncStateToSliders((state.brightness + 100), (state.contrast + 100), state.saturation, state.hue, state.exposure);
+            renderMainPreview(state, imgElement);
         }
     })
 })
