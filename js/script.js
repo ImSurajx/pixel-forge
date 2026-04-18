@@ -96,6 +96,64 @@ function rgbToHsl(R, G, B) {
     return hsl;
 }
 
+// this function convert HSL to RGB.
+function hslToRgb(h, s, l) {
+    let rgb = {
+        r: 0,
+        g: 0,
+        b: 0,
+    }
+    let c = (1 - Math.abs((2 * l) - 1)) * s; // calculate chroma
+    let x = c * (1 - Math.abs((h / 60) % 2 - 1));
+    let m = l - c / 2;
+    let r1 = 0, g1 = 0, b1 = 0;
+    h = h % 360
+    if (h < 0) h += 360;
+    // choose sector based on hue.
+    if (0 <= h && h < 60) {
+        r1 = c;
+        g1 = x;
+        b1 = 0;
+    }
+    else if (60 <= h && h < 120) {
+        r1 = x;
+        g1 = c;
+        b1 = 0;
+    }
+    else if (120 <= h && h < 180) {
+        r1 = 0;
+        g1 = c;
+        b1 = x;
+    }
+    else if (180 <= h && h < 240) {
+        r1 = 0;
+        g1 = x;
+        b1 = c;
+    }
+    else if (240 <= h && h < 300) {
+        r1 = x;
+        g1 = 0;
+        b1 = c;
+    }
+    else if (300 <= h && h < 360) {
+        r1 = c;
+        g1 = 0;
+        b1 = x;
+    }
+    rgb.r = (r1 + m) * 255;
+    rgb.g = (g1 + m) * 255;
+    rgb.b = (b1 + m) * 255;
+    // making values with in the range of color codes
+    rgb.r = clamp(rgb.r);
+    rgb.g = clamp(rgb.g);
+    rgb.b = clamp(rgb.b);
+    // rounding off values before return 
+    rgb.r = Math.round(rgb.r);
+    rgb.g = Math.round(rgb.g);
+    rgb.b = Math.round(rgb.b);
+    return rgb;
+}
+
 // create image & replace it with our container.
 selectImg.addEventListener("change", (e) => {
     let img = document.createElement('img');
@@ -223,6 +281,8 @@ async function applyAllEffects(state) {
         B = gray + (B - gray) * saturationFactor;
         // this part of loop for the hue
         let H = calculateHue(R, G, B);
+        let hsl = rgbToHsl(R, G, B);
+        hsl.h = (hsl.h + state.hue + 360) % 360;
         // this part of loop for the exposure
         R = 128 + (R - 128) * exposureFactor
         G = 128 + (G - 128) * exposureFactor
