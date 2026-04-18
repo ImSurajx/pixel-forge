@@ -27,7 +27,8 @@ let flipX = 1;
 let inputsRange = document.querySelectorAll('input[type="range"]');
 
 // select all filters
-let allFilters = document.querySelectorAll('.filter-type');
+let allFilters = document.querySelectorAll('.filter-type-x');
+
 // create object for presets
 const presets = {
     vivid: {
@@ -142,6 +143,15 @@ const presets = {
         exposure: 90
     }
 };
+
+// global state for all the sliders
+const state = {
+    brightness: 0,
+    contrast: 0,
+    saturation: 100,
+    hue: 0,
+    exposure: 100,
+}
 
 // this function update image according to user tool
 function updateImage() {
@@ -269,6 +279,55 @@ function hslToRgb(h, s, l) {
     return rgb;
 }
 
+// apply effects according to sliders
+async function applyAllEffects(state) {
+    if (!originalImage) return;
+    const canvas = await loadImageToCanvas();
+    const ctx = canvas.getContext("2d")
+    const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+    let brightnessValue = state.brightness;
+    let contrastValue = state.contrast;
+    const contrastFactor = (259 * (contrastValue + 255)) / (255 * (259 - contrastValue)); // 0 < 1 < 2+ ->  for contrast
+    const saturationFactor = state.saturation / 100;
+    const exposureFactor = 1 + (state.exposure - 100) / 100;
+    for (let i = 0; i < imageData.data.length; i += 4) {
+        let R = imageData.data[i];
+        let G = imageData.data[i + 1];
+        let B = imageData.data[i + 2];
+        // this part of loop for update brightness
+        R += brightnessValue;
+        G += brightnessValue;
+        B += brightnessValue;
+        // this part of loop for update contrast
+        R = (R - 128) * contrastFactor + 128;
+        G = (G - 128) * contrastFactor + 128;
+        B = (B - 128) * contrastFactor + 128;
+        // this part of loop for the saturation
+        let gray = (0.299 * R) + (0.587 * G) + (0.114 * B);
+        R = gray + (R - gray) * saturationFactor;
+        G = gray + (G - gray) * saturationFactor;
+        B = gray + (B - gray) * saturationFactor;
+        // this part of loop for the hue
+        let hsl = rgbToHsl(R, G, B);
+        hsl.h = (hsl.h + state.hue + 360) % 360;
+        let rgb = hslToRgb(hsl.h, hsl.s, hsl.l)
+        R = rgb.r;
+        G = rgb.g;
+        B = rgb.b;
+        // this part of loop for the exposure
+        R = 128 + (R - 128) * exposureFactor
+        G = 128 + (G - 128) * exposureFactor
+        B = 128 + (B - 128) * exposureFactor
+        // this part make value with-in the range of the RGB
+        imageData.data[i] = clamp(R);
+        imageData.data[i + 1] = clamp(G);
+        imageData.data[i + 2] = clamp(B);
+    }
+    ctx.putImageData(imageData, 0, 0);
+    let dataURL = canvas.toDataURL();
+    imgElement.src = dataURL;
+}
+
 // create image & replace it with our container.
 selectImg.addEventListener("change", (e) => {
     let img = document.createElement('img');
@@ -321,15 +380,6 @@ mirror.addEventListener("click", (e) => {
     updateImage();
 })
 
-// global state for all the sliders
-const state = {
-    brightness: 0,
-    contrast: 0,
-    saturation: 100,
-    hue: 0,
-    exposure: 100,
-}
-
 // each slider logic are present here
 inputsRange.forEach((ele) => {
     if (ele.id === "brightness") {
@@ -375,52 +425,11 @@ inputsRange.forEach((ele) => {
 
 })
 
-async function applyAllEffects(state) {
-    if (!originalImage) return;
-    const canvas = await loadImageToCanvas();
-    const ctx = canvas.getContext("2d")
-    const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-    let brightnessValue = state.brightness;
-    let contrastValue = state.contrast;
-    const contrastFactor = (259 * (contrastValue + 255)) / (255 * (259 - contrastValue)); // 0 < 1 < 2+ ->  for contrast
-    const saturationFactor = state.saturation / 100;
-    const exposureFactor = 1 + (state.exposure - 100) / 100;
-    for (let i = 0; i < imageData.data.length; i += 4) {
-        let R = imageData.data[i];
-        let G = imageData.data[i + 1];
-        let B = imageData.data[i + 2];
-        // this part of loop for update brightness
-        R += brightnessValue;
-        G += brightnessValue;
-        B += brightnessValue;
-        // this part of loop for update contrast
-        R = (R - 128) * contrastFactor + 128;
-        G = (G - 128) * contrastFactor + 128;
-        B = (B - 128) * contrastFactor + 128;
-        // this part of loop for the saturation
-        let gray = (0.299 * R) + (0.587 * G) + (0.114 * B);
-        R = gray + (R - gray) * saturationFactor;
-        G = gray + (G - gray) * saturationFactor;
-        B = gray + (B - gray) * saturationFactor;
-        // this part of loop for the hue
-        let hsl = rgbToHsl(R, G, B);
-        hsl.h = (hsl.h + state.hue + 360) % 360;
-        let rgb = hslToRgb(hsl.h, hsl.s, hsl.l)
-        R = rgb.r;
-        G = rgb.g;
-        B = rgb.b;
-        // this part of loop for the exposure
-        R = 128 + (R - 128) * exposureFactor
-        G = 128 + (G - 128) * exposureFactor
-        B = 128 + (B - 128) * exposureFactor
-        // this part make value with-in the range of the RGB
-        imageData.data[i] = clamp(R);
-        imageData.data[i + 1] = clamp(G);
-        imageData.data[i + 2] = clamp(B);
-    }
-    ctx.putImageData(imageData, 0, 0);
-    let dataURL = canvas.toDataURL();
-    imgElement.src = dataURL;
-}
+
+
+
+
+
+
 
 
