@@ -16,7 +16,7 @@ let minZoom = 0.1;
 let maxZoom = 2;
 
 // varibles for rotation
-let antiClock = document.querySelector('.ri-anticlockwise-2-line');
+let rotateIcon = document.querySelectorAll('.rotate-icon');
 let rotation = 0;
 
 // varible for fliping the image
@@ -434,13 +434,20 @@ zoomOut.addEventListener("click", (e) => {
     zoom.textContent = `${Math.floor(scale * 100)}%`;
 })
 
-// when user click rotateIcon this function will run
-antiClock.addEventListener("click", (e) => {
-    if (!imgElement) return;
-    if (rotation >= 360) rotation = 0;
-    else rotation -= 90;
-    updateImage();
+// when user click rotate Icon this function will run
+rotateIcon.forEach((ele) => {
+    ele.addEventListener("click", (e) => {
+        if (!imgElement) return;
+        if (ele.classList[0] == 'ri-anticlockwise-2-line') {
+            rotation -= 90;
+        }
+        else if (ele.classList[0] == 'ri-clockwise-line') {
+            rotation += 90;
+        }
+        updateImage();
+    })
 })
+
 
 // when user click on horizontal flip icon this function will run
 mirror.addEventListener("click", (e) => {
@@ -515,7 +522,7 @@ filterContainer.addEventListener('click', (e) => {
 // automatic adjustments
 buttons.forEach((ele) => {
     ele.addEventListener("click", (e) => {
-        if(!imgElement) return;
+        if (!imgElement) return;
         if (ele.classList.contains('auto-enhance')) {
             let toggle = ele.childNodes[3];
             toggle.classList.toggle('toggle-reverse');
