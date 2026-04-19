@@ -223,6 +223,12 @@ main .container .presets .filter-container .outer .img-preview {
   flex: 1;
   margin-bottom: var(--space-1);
   border-radius: var(--radius-xs);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+main .container .presets .filter-container .outer .img-preview .ri-loader-line {
+  font-size: 2.5rem;
 }
 main .container .presets .filter-container .outer img {
   height: 100%;
@@ -454,4 +460,8 @@ main .container .adjustments .para-btns .normal-btn {
 }
 main .container .adjustments .para-btns .normal-btn:hover {
   background: #1E293B;
+}
+
+.hidden {
+  display: none;
 }/*# sourceMappingURL=style.css.map */

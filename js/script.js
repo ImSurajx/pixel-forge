@@ -354,9 +354,10 @@ async function renderMainPreview(state, img) {
 function loadThumbnail() {
     allFilters.forEach((ele) => {
         renderMainPreview(presets[ele.id], ele);
+        ele.removeAttribute("hidden");
+        ele.parentElement.childNodes[3].classList.add('hidden');         
     })
 }
-
 
 // create image & replace it with our container.
 selectImg.addEventListener("change", (e) => {

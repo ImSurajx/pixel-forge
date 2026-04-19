@@ -264,6 +264,12 @@ main {
                         flex: 1;
                         margin-bottom: var(--space-1);
                         border-radius: var(--radius-xs);
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+                        .ri-loader-line{
+                            font-size: 2.5rem;
+                        }
                     }
                     img{
                         height: 100%;
@@ -506,4 +512,9 @@ main {
         }
     }
 
+}
+
+// extra classes for dom manipulation
+.hidden{
+    display: none;   
 }
