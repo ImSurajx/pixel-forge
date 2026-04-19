@@ -30,6 +30,9 @@ let inputsRange = document.querySelectorAll('input[type="range"]');
 let allFilters = document.querySelectorAll('.filter-type-x');
 let filterContainer = document.querySelector('.filter-container');
 
+// get all btns
+let buttons = document.querySelectorAll('.btn');
+
 
 // create object for presets
 const presets = {
@@ -175,6 +178,14 @@ const utilityPresets = {
 
 // global state for all the sliders
 const state = {
+    brightness: 0,
+    contrast: 0,
+    saturation: 100,
+    hue: 0,
+    exposure: 100,
+}
+// backup for of state for reseting things
+const defaultState = {
     brightness: 0,
     contrast: 0,
     saturation: 100,
@@ -381,7 +392,7 @@ function loadThumbnail() {
     allFilters.forEach((ele) => {
         renderMainPreview(presets[ele.id], ele);
         ele.removeAttribute("hidden");
-        ele.parentElement.childNodes[3].classList.add('hidden');         
+        ele.parentElement.childNodes[3].classList.add('hidden');
     })
 }
 
@@ -497,6 +508,50 @@ filterContainer.addEventListener('click', (e) => {
             state.exposure = obj.exposure;
             syncStateToSliders((state.brightness + 100), (state.contrast + 100), state.saturation, state.hue, state.exposure);
             renderMainPreview(state, imgElement);
+        }
+    })
+})
+
+buttons.forEach((ele) => {
+    ele.addEventListener("click", (e) => {
+        if (ele.classList.contains('auto-enhance')) {
+            let toggle = ele.childNodes[3];
+            toggle.classList.toggle('toggle-reverse');
+            if (!toggle.classList.contains('toggle-reverse')) {
+                renderMainPreview(defaultState, imgElement);
+                let obj = defaultState;
+                syncStateToSliders(obj.brightness + 100, obj.contrast + 100, obj.saturation, obj.hue, obj.exposure);
+            }
+            else {
+                renderMainPreview(utilityPresets.autoEnhance, imgElement);
+                let obj = utilityPresets.autoEnhance;
+                syncStateToSliders(obj.brightness + 100, obj.contrast + 100, obj.saturation, obj.hue, obj.exposure);
+            }
+
+        }
+        else if (ele.classList.contains('smart-sharpen')) {
+            let toggle = ele.childNodes[3];
+            toggle.classList.toggle('toggle-reverse');
+            if (!toggle.classList.contains('toggle-reverse')) {
+                renderMainPreview(defaultState, imgElement);
+                let obj = defaultState;
+                syncStateToSliders(obj.brightness + 100, obj.contrast + 100, obj.saturation, obj.hue, obj.exposure);
+            }
+            else {
+                renderMainPreview(utilityPresets.smartSharpen, imgElement);
+                let obj = utilityPresets.smartSharpen;
+                syncStateToSliders(obj.brightness + 100, obj.contrast + 100, obj.saturation, obj.hue, obj.exposure);
+            }
+        }
+        else if (ele.classList.contains('auto-adjust')) {
+            renderMainPreview(utilityPresets.autoAdjust, imgElement);
+            let obj = utilityPresets.autoAdjust;
+            syncStateToSliders(obj.brightness + 100, obj.contrast + 100, obj.saturation, obj.hue, obj.exposure);
+        }
+        else if (ele.classList.contains('revert-all')) {
+            renderMainPreview(defaultState, imgElement);
+            let obj = defaultState;
+            syncStateToSliders(obj.brightness + 100, obj.contrast + 100, obj.saturation, obj.hue, obj.exposure);
         }
     })
 })

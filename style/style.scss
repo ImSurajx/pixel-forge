@@ -489,6 +489,9 @@ main {
                             border-radius: var(--radius-full);
                         }
                     }
+                    .toggle-reverse{
+                        flex-direction: row-reverse;
+                    }
                 }
 
                 .normal-btn {
