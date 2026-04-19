@@ -146,6 +146,32 @@ const presets = {
     }
 };
 
+// utility presets
+const utilityPresets = {
+    autoEnhance: {
+        brightness: 8,
+        contrast: 12,
+        saturation: 115,
+        hue: 0,
+        exposure: 103
+    },
+
+    smartSharpen: {
+        brightness: 2,
+        contrast: 18,
+        saturation: 105,
+        hue: 0,
+        exposure: 100
+    },
+
+    autoAdjust: {
+        brightness: 5,
+        contrast: 8,
+        saturation: 108,
+        hue: 0,
+        exposure: 102
+    }
+};
 
 // global state for all the sliders
 const state = {
