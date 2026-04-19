@@ -580,14 +580,20 @@ buttons.forEach((ele) => {
 })
 
 // reset everything to default state
-resetBtn.addEventListener("click", (e) => {
-    if (imgElement) imgElement.remove();
+resetBtn.addEventListener("click", () => {
+    // phase 1: remove active image/project
+    if (imgElement) {
+        imgElement.remove();
+        imgElement = null;
+    }
     if (originalImage) {
         URL.revokeObjectURL(originalImage);
         originalImage = null;
     }
+    inputFiles = null;
     isImage = false;
-    imageInputLable.hidden = false;
+
+    // phase 2: reset editor state
     let obj = defaultState;
     state.brightness = obj.brightness;
     state.contrast = obj.contrast;
@@ -597,19 +603,19 @@ resetBtn.addEventListener("click", (e) => {
     rotation = 0;
     scale = 1;
     flipX = 1;
+
+    // phase 3: reset UI
+    imageInputLable.hidden = false;
+    selectImg.value = "";
+    syncStateToSliders(100, 100, 100, 0, 100);
     allFilters.forEach((ele) => {
         ele.src = "#";
         ele.hidden = true;
         ele.parentElement.childNodes[3].classList.remove('hidden');
-    })
-    let buttons = document.querySelectorAll('.toggle-reverse');
-    buttons.forEach((ele) => {
+    });
+    document.querySelectorAll('.toggle-reverse').forEach((ele) => {
         ele.classList.remove('toggle-reverse');
-    })
-    imgElement = null;
-    syncStateToSliders(100, 100, 100, 0, 100);
-    inputFiles = null;
-    selectImg.value = "";
+    });
 });
 
 
