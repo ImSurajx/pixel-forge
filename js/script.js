@@ -566,6 +566,10 @@ buttons.forEach((ele) => {
             state.saturation = obj.saturation;
             state.hue = obj.hue;
             state.exposure = obj.exposure;
+            scale = 1;
+            rotation = 0;
+            flipX = 1;
+            updateImage();
         }
     })
 })
