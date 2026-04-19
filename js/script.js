@@ -512,14 +512,16 @@ filterContainer.addEventListener('click', (e) => {
     })
 })
 
+// automatic adjustments
 buttons.forEach((ele) => {
     ele.addEventListener("click", (e) => {
+        if(!imgElement) return;
         if (ele.classList.contains('auto-enhance')) {
             let toggle = ele.childNodes[3];
             toggle.classList.toggle('toggle-reverse');
             if (!toggle.classList.contains('toggle-reverse')) {
-                renderMainPreview(defaultState, imgElement);
-                let obj = defaultState;
+                renderMainPreview(state, imgElement);
+                let obj = state;
                 syncStateToSliders(obj.brightness + 100, obj.contrast + 100, obj.saturation, obj.hue, obj.exposure);
             }
             else {
@@ -533,8 +535,8 @@ buttons.forEach((ele) => {
             let toggle = ele.childNodes[3];
             toggle.classList.toggle('toggle-reverse');
             if (!toggle.classList.contains('toggle-reverse')) {
-                renderMainPreview(defaultState, imgElement);
-                let obj = defaultState;
+                renderMainPreview(state, imgElement);
+                let obj = state;
                 syncStateToSliders(obj.brightness + 100, obj.contrast + 100, obj.saturation, obj.hue, obj.exposure);
             }
             else {
@@ -552,6 +554,11 @@ buttons.forEach((ele) => {
             renderMainPreview(defaultState, imgElement);
             let obj = defaultState;
             syncStateToSliders(obj.brightness + 100, obj.contrast + 100, obj.saturation, obj.hue, obj.exposure);
+            state.brightness = obj.brightness + 100;
+            state.contrast = obj.contrast + 100;
+            state.saturation = obj.saturation;
+            state.hue = obj.hue;
+            state.exposure = obj.exposure;
         }
     })
 })
