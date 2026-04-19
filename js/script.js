@@ -30,10 +30,14 @@ let inputsRange = document.querySelectorAll('input[type="range"]');
 let allFilters = document.querySelectorAll('.filter-type-x');
 let filterContainer = document.querySelector('.filter-container');
 
-// get all btns
+// get all automatic btns
 let buttons = document.querySelectorAll('.btn');
 
+// get reset btn
+let resetBtn = document.querySelector('.reset-btn');
 
+// image main source
+let inputFiles = null;
 // create object for presets
 const presets = {
     vivid: {
@@ -177,7 +181,7 @@ const utilityPresets = {
 };
 
 // global state for all the sliders
-const state = {
+let state = {
     brightness: 0,
     contrast: 0,
     saturation: 100,
@@ -401,6 +405,7 @@ selectImg.addEventListener("change", (e) => {
     let img = document.createElement('img');
     img.id = 'cont-img';
     const file = e.target.files[0];
+    inputFiles = e.target.files[0];
     if (!file) {
         return
     }
@@ -573,6 +578,42 @@ buttons.forEach((ele) => {
         }
     })
 })
+
+// reset everything to default state
+resetBtn.addEventListener("click", (e) => {
+    if (imgElement) imgElement.remove();
+    if (originalImage) {
+        URL.revokeObjectURL(originalImage);
+        originalImage = null;
+    }
+    isImage = false;
+    imageInputLable.hidden = false;
+    let obj = defaultState;
+    state.brightness = obj.brightness;
+    state.contrast = obj.contrast;
+    state.saturation = obj.saturation;
+    state.hue = obj.hue;
+    state.exposure = obj.exposure;
+    rotation = 0;
+    scale = 1;
+    flipX = 1;
+    allFilters.forEach((ele) => {
+        ele.src = "#";
+        ele.hidden = true;
+        ele.parentElement.childNodes[3].classList.remove('hidden');
+    })
+    let buttons = document.querySelectorAll('.toggle-reverse');
+    buttons.forEach((ele) => {
+        ele.classList.remove('toggle-reverse');
+    })
+    imgElement = null;
+    syncStateToSliders(100, 100, 100, 0, 100);
+    inputFiles = null;
+    selectImg.value = "";
+});
+
+
+
 
 
 
