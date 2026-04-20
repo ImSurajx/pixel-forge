@@ -577,6 +577,7 @@ buttons.forEach((ele) => {
             scale = 1;
             rotation = 0;
             flipX = 1;
+            zoom.textContent = `${100}%`;
             updateImage();
         }
     })
