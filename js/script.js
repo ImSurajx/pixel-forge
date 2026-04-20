@@ -36,6 +36,9 @@ let buttons = document.querySelectorAll('.btn');
 // get reset btn
 let resetBtn = document.querySelector('.reset-btn');
 
+// get download btn
+let downloadBtn = document.querySelector('.download-btn');
+
 // image main source
 let inputFiles = null;
 // create object for presets
@@ -208,7 +211,7 @@ function clamp(value) {
 }
 
 // creating a canvas in which i load the imgae.
-function loadImageToCanvas() {
+function loadImageToCanvas(originalImage) {
     return new Promise((resolve, reject) => {
         let image = new Image();
         image.src = originalImage;
@@ -341,7 +344,7 @@ function syncStateToSliders(brightness, constrast, saturation, hue, exposure) {
 // apply effects according to sliders
 async function applyAllEffects(state) {
     if (!originalImage) return;
-    const canvas = await loadImageToCanvas();
+    const canvas = await loadImageToCanvas(originalImage);
     const ctx = canvas.getContext("2d")
     const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
     let brightnessValue = state.brightness;
@@ -618,6 +621,32 @@ resetBtn.addEventListener("click", () => {
     });
 });
 
+// download preview window image
+downloadBtn.addEventListener('click', async (e) => {
+    if (!imgElement) return;
+    let canvas = await loadImageToCanvas(imgElement.src);
+    let newRotate = ((rotation % 360) + 360) % 360;
+    let exportCanvas = document.createElement('canvas');
+    if (newRotate == 0 || newRotate == 180) {
+        exportCanvas.height = canvas.height;
+        exportCanvas.width = canvas.width;
+    }
+    else if (newRotate == 90 || newRotate == 270) {
+        exportCanvas.height = canvas.width;
+        exportCanvas.width = canvas.height;
+    }
+    // translate to center of exportCanvas
+    let radian = newRotate * Math.PI / 180;
+    let exportCtx = exportCanvas.getContext("2d");
+    exportCtx.translate(exportCanvas.width / 2, exportCanvas.height / 2);
+    exportCtx.rotate(radian);
+    exportCtx.scale(flipX, 1);
+    exportCtx.drawImage(canvas, -canvas.width / 2, -canvas.height / 2);
+    let link = document.createElement('a');
+    link.download = 'pixelforge.jpg';
+    link.href = exportCanvas.toDataURL("image/png")
+    link.click()
+})
 
 
 
